@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Tool Finder</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+  <div class="container">
+
+    <h1 class="title">Find the Perfect AI Tool</h1>
+    <p class="subtitle">Smart recommendations. Zero guesswork.</p>
+
+    <div class="panel">
+      <select id="task">
+        <option value="">Select Task</option>
+        <option value="image">Image Generation</option>
+        <option value="video">Video Generation</option>
+        <option value="coding">Coding</option>
+        <option value="ppt">PPT Creation</option>
+        <option value="writing">Report / Writing</option>
+        <option value="voice">Voice Generation</option>
+        <option value="music">Music Generation</option>
+        <option value="resume">Resume Building</option>
+        <option value="website">Website Creation</option>
+      </select>
+
+      <select id="budget">
+        <option value="">Budget</option>
+        <option value="free">Free</option>
+        <option value="freemium">Freemium</option>
+        <option value="paid">Paid</option>
+      </select>
+
+      <select id="skill">
+        <option value="">Skill Level</option>
+        <option value="beginner">Beginner</option>
+        <option value="intermediate">Intermediate</option>
+        <option value="advanced">Advanced</option>
+      </select>
+
+      <select id="priority">
+        <option value="">Priority</option>
+        <option value="quality">Best Quality</option>
+        <option value="speed">Fast Results</option>
+        <option value="ease">Ease of Use</option>
+      </select>
+
+      <button onclick="recommend()">Find Best Tools</button>
+    </div>
+
+    <div id="results" class="results"></div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
