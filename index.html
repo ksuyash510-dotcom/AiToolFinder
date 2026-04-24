@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Tool Finder — Find Perfect AI Tools Instantly</title>
+<meta name="description" content="Describe your task and get AI-powered recommendations for the best AI tools with comparisons, workflows, and alternatives.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="page">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="logo">
+      <div class="logo-icon">🔍</div>
+      <div class="logo-text">AI Tool <span>Finder</span></div>
+    </div>
+    <div class="badge" id="modelBadge">● Groq Powered</div>
+    <div class="topbar-right">
+      <button class="icon-btn" id="kbBtn" title="Keyboard shortcuts (?)">⌨</button>
+      <button class="icon-btn" id="settingsBtn" title="Settings (Ctrl+,)">⚙</button>
+      <span id="themeIcon" style="cursor:pointer;font-size:16px;line-height:1">🌙</span>
+      <div class="theme-toggle" id="themeToggle"></div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <h1>Find the <span class="grad">Perfect AI Tool</span><br>for Your Task</h1>
+    <p class="subtitle">Describe what you want to build. Get honest recommendations, full workflow plans, and side-by-side comparisons — powered by AI.</p>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs-wrap">
+    <div class="tabs" id="tabs">
+      <button class="tab-btn active" data-tab="finder" id="tab-finder">🔍 Tool Finder</button>
+      <button class="tab-btn" data-tab="workflow" id="tab-workflow">⚡ Workflow</button>
+      <button class="tab-btn" data-tab="alternatives" id="tab-alternatives">🔄 Alternatives</button>
+      <button class="tab-btn" data-tab="news" id="tab-news">📰 News</button>
+      <button class="tab-btn" data-tab="saved" id="tab-saved">⭐ Saved <span class="tab-count" id="savedCount">0</span></button>
+    </div>
+  </div>
+
+  <!-- FINDER -->
+  <div class="panel active" id="panel-finder">
+    <div class="search-box">
+      <div class="search-label">What do you want to do?</div>
+      <textarea id="userPrompt" placeholder="e.g. I want to create cinematic product videos without showing my face. Beginner, prefer free tools..." rows="3"></textarea>
+      <div class="char-count"><span id="charCount">0</span> / 500</div>
+    </div>
+    <div class="history-wrap" id="historyWrap">
+      <div class="history-label">Recent searches</div>
+      <div class="history-pills" id="historyPills"></div>
+    </div>
+    <div class="cat-section">
+      <div class="cat-label">Quick Browse</div>
+      <div class="cat-chips" id="catChips"></div>
+    </div>
+    <div class="filters">
+      <div class="filter-group">
+        <div class="filter-label">Budget</div>
+        <select id="budget"><option value="">Any</option><option value="free">Free only</option><option value="freemium">Free + Freemium</option><option value="paid">Budget not an issue</option></select>
+      </div>
+      <div class="filter-group">
+        <div class="filter-label">Skill Level</div>
+        <select id="skill"><option value="">Any</option><option value="beginner">Beginner</option><option value="intermediate">Intermediate</option><option value="advanced">Advanced / Pro</option></select>
+      </div>
+      <div class="filter-group">
+        <div class="filter-label">Priority</div>
+        <select id="priority"><option value="">Any</option><option value="quality">Best Quality</option><option value="speed">Fast Results</option><option value="ease">Easiest to Use</option></select>
+      </div>
+      <div class="filter-group">
+        <div class="filter-label">Platform</div>
+        <select id="platform"><option value="">Any</option><option value="web">Web / Browser</option><option value="desktop">Desktop App</option><option value="api">API / Developer</option><option value="mobile">Mobile</option></select>
+      </div>
+    </div>
+    <button class="find-btn" id="findBtn" onclick="findTools()">Find Best Tools →</button>
+    <div class="compare-banner" id="compareBanner">
+      <span class="compare-banner-text" id="compareBannerText">Select 2 tools to compare</span>
+      <button class="compare-now-btn" id="compareNowBtn" style="display:none" onclick="openCompare()">Compare Now →</button>
+    </div>
+    <div class="loading" id="loading"><div class="spinner-wrap"><div class="spinner"></div></div><div class="loading-text">Analysing your requirements<span>...</span></div></div>
+    <div class="error-box" id="errorBox"></div>
+    <div style="margin-top:28px">
+      <div class="results-header" id="resultsHeader">
+        <div class="results-title">Recommended Tools</div>
+        <div class="results-count" id="resultsCount"></div>
+        <div class="results-actions">
+          <button class="outline-btn" onclick="copyResults()">📋 Copy</button>
+          <button class="outline-btn" onclick="exportJSON()">📥 JSON</button>
+          <button class="outline-btn" onclick="exportPDF()">🖨 PDF</button>
+        </div>
+      </div>
+      <div id="emptyFinder" class="empty-state">
+        <div class="empty-icon">🤖</div>
+        <div class="empty-title">Ready to Find Your AI Tools</div>
+        <div class="empty-desc">Describe your task above or pick a category to get started instantly</div>
+        <div class="suggest-row" id="suggestRow"></div>
+      </div>
+      <div class="cards" id="cards"></div>
+    </div>
+  </div>
+
+  <!-- WORKFLOW -->
+  <div class="panel" id="panel-workflow">
+    <div class="section-title">Multi-Tool Workflow Builder</div>
+    <p class="section-sub">Describe a full project goal. Get a step-by-step AI toolkit — best tool for each stage.</p>
+    <div class="search-box">
+      <div class="search-label">What's your project goal?</div>
+      <textarea id="workflowPrompt" placeholder="e.g. I want to start a YouTube tech review channel — scripting, voiceover, thumbnail, editing, SEO..." rows="3"></textarea>
+    </div>
+    <button class="find-btn" id="workflowBtn" onclick="buildWorkflow()">Build My Toolkit →</button>
+    <div class="loading" id="workflowLoading"><div class="spinner-wrap"><div class="spinner"></div></div><div class="loading-text">Building your workflow<span>...</span></div></div>
+    <div class="error-box" id="workflowError"></div>
+    <div class="workflow-actions" id="workflowActions" style="display:none">
+      <button class="outline-btn" onclick="copyWorkflow()">📋 Copy as Checklist</button>
+    </div>
+    <div class="workflow-steps" id="workflowSteps"></div>
+  </div>
+
+  <!-- ALTERNATIVES -->
+  <div class="panel" id="panel-alternatives">
+    <div class="section-title">Alternatives Finder</div>
+    <p class="section-sub">Type any AI tool name — get 3 honest alternatives with pros, cons &amp; comparison.</p>
+    <div class="alt-row">
+      <input type="text" class="alt-input" id="altInput" placeholder="e.g. Midjourney, ChatGPT, Runway ML..." onkeydown="if(event.key==='Enter')findAlts()">
+      <button class="alt-btn" id="altBtn" onclick="findAlts()">Find Alternatives →</button>
+    </div>
+    <div class="loading" id="altLoading"><div class="spinner-wrap"><div class="spinner"></div></div><div class="loading-text">Finding alternatives<span>...</span></div></div>
+    <div class="error-box" id="altError"></div>
+    <div class="cards" id="altCards"></div>
+  </div>
+
+  <!-- NEWS -->
+  <div class="panel" id="panel-news">
+    <div class="section-title">AI Tool News Feed</div>
+    <p class="section-sub">Recently launched and trending AI tools — generated fresh on demand.</p>
+    <button class="find-btn" id="newsBtn" onclick="loadNews()" style="margin-bottom:20px">Fetch Latest AI Tools →</button>
+    <div class="loading" id="newsLoading"><div class="spinner-wrap"><div class="spinner"></div></div><div class="loading-text">Fetching latest tools<span>...</span></div></div>
+    <div class="error-box" id="newsError"></div>
+    <div class="news-grid" id="newsGrid"></div>
+  </div>
+
+  <!-- SAVED -->
+  <div class="panel" id="panel-saved">
+    <div class="section-title">⭐ Saved Tools</div>
+    <p class="section-sub">Your bookmarked AI tools — saved locally in your browser.</p>
+    <div id="savedEmpty" class="empty-state">
+      <div class="empty-icon">⭐</div>
+      <div class="empty-title">No Saved Tools Yet</div>
+      <div class="empty-desc">Click the ☆ icon on any tool card to bookmark it here</div>
+    </div>
+    <div class="cards" id="savedCards"></div>
+    <div id="clearSavedWrap" style="margin-top:16px;display:none">
+      <button class="outline-btn" onclick="clearSaved()">🗑 Clear All Saved</button>
+    </div>
+  </div>
+
+</div><!-- end .page -->
+
+<!-- COMPARE MODAL -->
+<div class="modal-overlay" id="compareModal" onclick="if(event.target===this)closeCompare()">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Side-by-Side Comparison</div>
+      <button class="modal-close" onclick="closeCompare()">✕</button>
+    </div>
+    <div class="compare-grid" id="compareGrid"></div>
+  </div>
+</div>
+
+<!-- SETTINGS MODAL -->
+<div class="modal-overlay" id="settingsModal" onclick="if(event.target===this)closeSettings()">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-header">
+      <div class="modal-title">⚙ Settings</div>
+      <button class="modal-close" onclick="closeSettings()">✕</button>
+    </div>
+    <div class="settings-body">
+
+      <div class="filter-label" style="margin-bottom:8px">AI Model</div>
+      <select id="modelSelect" style="width:100%;margin-bottom:20px">
+        <option value="llama-3.3-70b-versatile">Llama 3.3 70B — Best Quality ✨</option>
+        <option value="llama-3.1-8b-instant">Llama 3.1 8B — Fastest ⚡</option>
+        <option value="mixtral-8x7b-32768">Mixtral 8x7B — Balanced 🎯</option>
+      </select>
+      <button class="find-btn" onclick="saveSettings()">Save Settings ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- KEYBOARD MODAL -->
+<div class="modal-overlay" id="kbModal" onclick="if(event.target===this)closeKb()">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-header">
+      <div class="modal-title">⌨ Keyboard Shortcuts</div>
+      <button class="modal-close" onclick="closeKb()">✕</button>
+    </div>
+    <div class="kb-list">
+      <div class="kb-row"><kbd>Ctrl + Enter</kbd><span>Run search / build</span></div>
+      <div class="kb-row"><kbd>Esc</kbd><span>Close any modal</span></div>
+      <div class="kb-row"><kbd>Ctrl + ,</kbd><span>Open Settings</span></div>
+      <div class="kb-row"><kbd>Ctrl + E</kbd><span>Export results as JSON</span></div>
+      <div class="kb-row"><kbd>?</kbd><span>Show this help</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>
